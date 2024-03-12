@@ -1,79 +1,89 @@
 ﻿//Ten: Mai Nhật Nam - MSSV: 22120219
-//Bài 04: Cài đặt lớp stack với các yêu cầu sau
-//Dùng mảng 1 chiều hoặc DSLK để minh họa stack.
-//- Thêm phần tử vào stack.
-//- Xóa phần tử khỏi stack.
-//- Lấy phần tử đầu stack.
-//- Kiểm tra stack rỗng.
-//- Lấy kích thước stack.
+//Bài 05: Cài đặt lớp queue với các yêu cầu sau
+//Dùng mảng 1 chiều hoặc DSLK để minh họa queue.
+//- Thêm phần tử vào queue.
+//- Xóa phần tử khỏi queue.
+//- Lấy phần tử đầu queue.
+//- Kiểm tra queue rỗng.
+//- Lấy kích thước queue.
 
 #include<iostream>
 #include<vector>
 using namespace std;
 
-// Minh hoa stack bang mang 1 chieu.
-class stack {
+class queue {
 private:
 	int* a;
-	int capacity; // Luu size hien tai co trong 1 Stack
-	int size; // Luu so phan tu co the o trong 1 Stack.
+	int capacity;
+	int size;
+	int front;
+	int rear;
 public:
-	stack(int size);
+	queue(int Size);
 	void push(int element);
 	void pop();
-	int Top();
+	int top();
 	bool isEmpty();
 	int GetSize();
-
 };
-
 int main() {
-	stack a(5);
-	a.push(5);
-	a.push(10);
-	a.push(15);
-	a.push(25);
-	cout << "Top element: " << a.Top() << endl;
-	a.pop();
-	cout << "Top element after a pop : " << a.Top();
+	queue q(5);
+	q.push(1);
+	q.push(2);
+	q.push(3);
+	q.push(4);
+	cout << "Top element: " << q.top(); // should be  1.
+	q.pop();
 	cout << endl;
-	cout << "Current size: " << a.GetSize();
-		 
-}
-
-stack::stack(int Size) {
-	size = Size;
-	a = new int[size];
-	capacity = -1; 
-}
-
-void stack::push(int element) {
-	if (capacity >= size - 1) {
-		cout << "Stack overflow" << endl;
+	cout << "Top element: " << q.top() << endl; // should be 2.
+	if (q.isEmpty()) {
+		cout << "Queue is emty ";
 	}
 	else {
-		a[++capacity] = element;
+		cout << "Current Size: " << q.GetSize(); // should be 3
 	}
 }
 
-void stack:: pop() {
-	if (capacity < 0) {
-		cout << "Stack dang rong" << endl;
+queue::queue(int Size) {
+	capacity = Size;
+	a = new int[capacity];
+	size = 0;
+	front = 0;
+	rear = -1;
+}
+void queue::push(int element) {
+	if (size < capacity) {
+		rear = (rear + 1) % capacity; 
+		a[rear] = element;
+		size++;
 	}
 	else {
-		capacity--;
+		cout << "Queue is Full" << endl;
 	}
-	
 }
 
-int stack::Top() {
-	return a[capacity];
+void queue::pop() {
+	if (size > 0) {
+		front = (front + 1) % capacity; 
+		size--;
+	}
+	else {
+		cout << "Queue is empty" << endl;
+	}
 }
 
-bool stack::isEmpty() {
-	return capacity == -1;
+int queue::top() {
+	if (size == 0) {
+		cout << "Queue is empty" << endl;
+		return -1; 
+	}
+	return a[front];
 }
 
-int stack::GetSize() {
-	return capacity + 1; 
+bool queue::isEmpty() {
+	return size == 0;
+}
+
+int queue::GetSize() {
+	return size;
 }
